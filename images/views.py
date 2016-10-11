@@ -1,7 +1,16 @@
+from django.http import Http404
 from django.http import HttpResponse
+from django.shortcuts import render
+from .models import Post
 
 def index(request):
-    return HttpResponse("<h1>First page.</h1>")
+    allPosts = Post.objects.all()
+    context ={'allPosts' : allPosts}
+    return render(request, 'images/index.html', context)
 
 def postDetail(request, image_id):
-    return HttpResponse("<h2>Details for image :" + str(image_id) +" </h2>")
+    try:
+        post = Post.objects.get(pk=image_id)
+    except Post.DoesNotExist:
+        raise Http404("Post not found!")
+    return render(request, 'images/index.html', {'allPosts' : allPosts})
