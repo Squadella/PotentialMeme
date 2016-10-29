@@ -5,7 +5,7 @@ from .models import Post
 
 def index(request):
     allPosts = Post.objects.all()
-    context ={'allPosts' : allPosts}
+    context ={'allPosts': allPosts}
     return render(request, 'images/index.html', context)
 
 def postDetail(request, image_id):
@@ -13,4 +13,4 @@ def postDetail(request, image_id):
         post = Post.objects.get(pk=image_id)
     except Post.DoesNotExist:
         raise Http404("Post not found!")
-    return render(request, 'images/index.html', {'allPosts' : allPosts})
+    return render(request, 'images/detail.html', {'post': post})

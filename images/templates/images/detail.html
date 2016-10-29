@@ -1,0 +1,8 @@
+<h1>{{ post.title }} </h1>
+<h2> {{ post.image }} </h2>
+
+<ul>
+    {% for comment in post.comment_set.all %}
+        <li>{{ comment.author }} - {{ comment.content }}</li>
+    {% endfor %}
+</ul>
