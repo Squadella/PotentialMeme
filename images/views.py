@@ -1,6 +1,5 @@
-from django.http import Http404
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect
 from .models import Post
 
 def index(request):
@@ -9,8 +8,17 @@ def index(request):
     return render(request, 'images/index.html', context)
 
 def postDetail(request, image_id):
-    try:
-        post = Post.objects.get(pk=image_id)
-    except Post.DoesNotExist:
-        raise Http404("Post not found!")
+    post = get_object_or_404(Post, pk=image_id)
     return render(request, 'images/detail.html', {'post': post})
+
+def detailedUpVoted(request, image_id):
+    post = get_object_or_404(Post, pk=image_id)
+    post.isUpVoted = not post.isUpVoted
+    post.save()
+    return render(request, 'images/detail.html', {'post': post})
+
+def generalUpVoted(request, image_id):
+    post = get_object_or_404(Post, pk=image_id)
+    post.isUpVoted = not post.isUpVoted
+    post.save()
+    return HttpResponseRedirect("/images/")

@@ -1,8 +1,14 @@
 <h1>{{ post.title }} </h1>
-<h2> {{ post.image }} </h2>
+<img src="{{ post.image }}">
+<p>{% if post.isUpVoted%}
+    Up Voted!
+{% endif %}</p>
 
-<ul>
-    {% for comment in post.comment_set.all %}
-        <li>{{ comment.author }} - {{ comment.content }}</li>
-    {% endfor %}
-</ul>
+{% if errorMessage %}
+    <p>{{ errorMessage }}</p>
+{% endif %}
+
+<form action="{% url 'images:detailedUpVoted' post.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="upVote">
+</form>

@@ -1,7 +1,14 @@
 {% if allPosts %}
     <ul>
         {% for post in allPosts %}
-            <li><a href="/images/{{ post.id }}/">{{ post.title }}</a></li>
+            <li>
+                <a href="{% url 'images:detail' post.id %}">{{ post.title }}
+                    <form action="{% url 'images:generalUpVoted' post.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="upVote">
+                    </form>
+                </a>
+            </li>
         {% endfor %}
     </ul>
 {%  else %}
