@@ -6,10 +6,10 @@ app_name = 'images'
 
 urlpatterns = [
     # /images/
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.ViewIndex.as_view(), name='index'),
 
     # /images/imageID
-    url(r'^(?P<image_id>[0-9]+)/$', views.postDetail, name='detail'),
+    url(r'^(?P<pk>[0-9]+)/$', views.ViewDetail.as_view(), name='detail'),
 
     # /images/imageID/UpVoted
     url(r'^(?P<image_id>[0-9]+)/upVoted/$', views.detailedUpVoted, name='detailedUpVoted'),

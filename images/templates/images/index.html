@@ -15,19 +15,21 @@
             </li>
         {% endfor %}
     </ul>
-    <div class="pagination">
-        <span class="step-links">
-            {% if allPosts.has_previous %}
-                <a href="?page={{ allPosts.previous_page_number }}">previous</a>
-            {% endif %}
-            <span class="current">
-                Page {{ allPosts.number }} of {{ allPosts.paginator.num_pages }}
+    {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="/images?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="/images?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
             </span>
-            {% if allPosts.has_next %}
-                <a href="?page={{ allPosts.next_page_number }}">next</a>
-            {% endif %}
-        </span>
-    </div>
+        </div>
+    {% endif %}
 {%  else %}
     <h3>Nothing to show here</h3>
 {%  endif %}
