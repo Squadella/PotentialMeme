@@ -1,10 +1,14 @@
 from django.db import models
+from django.core.urlresolvers import reverse
 
 class Post(models.Model):
     title = models.CharField(max_length=250)
     image = models.CharField(max_length=1000)
     isUpVoted = models.BooleanField(default=False)
     isFaved = models.BooleanField(default=False)
+
+    def get_absolute_url(self):
+        return reverse('images:detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         return self.title

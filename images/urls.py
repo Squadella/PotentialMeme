@@ -8,20 +8,29 @@ urlpatterns = [
     # /images/
     url(r'^$', views.ViewIndex.as_view(), name='index'),
 
-    # /images/imageID
+    # /images/pk
     url(r'^(?P<pk>[0-9]+)/$', views.ViewDetail.as_view(), name='detail'),
 
-    # /images/imageID/UpVoted
-    url(r'^(?P<image_id>[0-9]+)/upVoted/$', views.detailedUpVoted, name='detailedUpVoted'),
+    # /images/image/create/
+    url(r'image/create/$', views.CreatePost.as_view(), name='CreatePost'),
+
+    # /images/image/pk/
+    url(r'image/(?P<pk>[0-9]+)/$', views.UpdatePost.as_view(), name='UpdatePost'),
+
+    # /images/image/pk/delete
+    url(r'image/(?P<pk>[0-9]+)/delete$', views.DeletePost.as_view(), name='DeletePost'),
 
     # /images/imageID/UpVoted
-    url(r'^(?P<image_id>[0-9]+)/gupVoted/$', views.generalUpVoted, name='generalUpVoted'),
+    url(r'(?P<image_id>[0-9]+)/upVoted/$', views.detailedUpVoted, name='detailedUpVoted'),
+
+    # /images/imageID/UpVoted
+    url(r'(?P<image_id>[0-9]+)/gupVoted/$', views.generalUpVoted, name='generalUpVoted'),
 
     # /image/imageID/faved
-    url(r'^(?P<image_id>[0-9]+)/Faved/$', views.detailedFaved, name='detailedFaved'),
+    url(r'(?P<image_id>[0-9]+)/Faved/$', views.detailedFaved, name='detailedFaved'),
 
     # /image/imageID/faved
-    url(r'^(?P<image_id>[0-9]+)/gFaved/$', views.generalFaved, name='generalFaved'),
+    url(r'(?P<image_id>[0-9]+)/gFaved/$', views.generalFaved, name='generalFaved'),
 
 ]
 

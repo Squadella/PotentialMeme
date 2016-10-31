@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
-from django.views.generic import ListView, DeleteView, DetailView
+from django.views.generic import ListView, DeleteView, DetailView, CreateView, UpdateView
+from django.core.urlresolvers import reverse_lazy
 from .models import Post
 
 
@@ -14,6 +15,21 @@ class ViewIndex(ListView):
 class ViewDetail(DetailView):
     template_name = 'images/detail.html'
     model = Post
+
+
+class CreatePost(CreateView):
+    model = Post
+    fields = ['title', 'image']
+
+
+class UpdatePost(UpdateView):
+    model = Post
+    fields = ['title', 'image']
+
+
+class DeletePost(DeleteView):
+    model = Post
+    success_url = reverse_lazy('images:index')
 
 
 def detailedUpVoted(request, image_id):
