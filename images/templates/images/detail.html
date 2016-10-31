@@ -3,6 +3,9 @@
 <p>{% if post.isUpVoted%}
     Up Voted!
 {% endif %}</p>
+<p>{% if post.isFaved%}
+    Faved!
+{% endif %}</p>
 
 {% if errorMessage %}
     <p>{{ errorMessage }}</p>
@@ -10,5 +13,9 @@
 
 <form action="{% url 'images:detailedUpVoted' post.id %}" method="post">
     {% csrf_token %}
-    <input type="submit" value="upVote">
+    <input type="submit" value="Up Vote">
+</form>
+<form action="{% url 'images:detailedFaved' post.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Fav">
 </form>

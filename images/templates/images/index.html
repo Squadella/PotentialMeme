@@ -7,10 +7,27 @@
                         {% csrf_token %}
                         <input type="submit" value="upVote">
                     </form>
+                    <form action="{% url 'images:generalFaved' post.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="Fav">
+                    </form>
                 </a>
             </li>
         {% endfor %}
     </ul>
+    <div class="pagination">
+        <span class="step-links">
+            {% if allPosts.has_previous %}
+                <a href="?page={{ allPosts.previous_page_number }}">previous</a>
+            {% endif %}
+            <span class="current">
+                Page {{ allPosts.number }} of {{ allPosts.paginator.num_pages }}
+            </span>
+            {% if allPosts.has_next %}
+                <a href="?page={{ allPosts.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+    </div>
 {%  else %}
     <h3>Nothing to show here</h3>
 {%  endif %}
