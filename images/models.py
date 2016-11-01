@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 
 class Post(models.Model):
     title = models.CharField(max_length=250)
-    image = models.CharField(max_length=1000)
+    image = models.FileField()
     isUpVoted = models.BooleanField(default=False)
     isFaved = models.BooleanField(default=False)
 

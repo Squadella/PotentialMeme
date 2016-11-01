@@ -8,6 +8,15 @@ urlpatterns = [
     # /images/
     url(r'^$', views.ViewIndex.as_view(), name='index'),
 
+    # /images/register/
+    url(r'^register/$', views.UserFormRegistration.as_view(), name='register'),
+
+    # /images/login
+    url(r'^login/$', views.UserFormLogin.as_view(), name='login'),
+
+    # /images/logout
+    url(r'^logout/$', views.userLogout, name='logout'),
+
     # /images/pk
     url(r'^(?P<pk>[0-9]+)/$', views.ViewDetail.as_view(), name='detail'),
 
