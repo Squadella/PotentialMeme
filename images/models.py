@@ -1,7 +1,10 @@
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
+
 
 class Post(models.Model):
+    author = models.ForeignKey(User)
     title = models.CharField(max_length=250)
     image = models.FileField()
     isUpVoted = models.BooleanField(default=False)

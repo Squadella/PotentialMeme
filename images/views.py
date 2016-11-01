@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.views.generic import ListView, DeleteView, DetailView, CreateView, UpdateView, View
 from django.core.urlresolvers import reverse_lazy
 from .models import Post
@@ -22,6 +22,9 @@ class CreatePost(CreateView):
     model = Post
     fields = ['title', 'image']
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super(CreatePost, self).form_valid(form)
 
 class UpdatePost(UpdateView):
     model = Post
@@ -31,6 +34,13 @@ class UpdatePost(UpdateView):
 class DeletePost(DeleteView):
     model = Post
     success_url = reverse_lazy('images:index')
+
+    def get_object(self, queryset=None):
+        obj = super(DeletePost, self).get_object()
+        if not obj.author.pk == self.request.user.pk:
+            # Can't delete the object because the user isn't the author.
+            raise Http404
+        return obj
 
 class UserFormRegistration(View):
     form_class = UserForm
