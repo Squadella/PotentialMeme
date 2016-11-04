@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, Http404
 from django.views.generic import ListView, DeleteView, DetailView, CreateView, UpdateView, View
 from django.core.urlresolvers import reverse_lazy
-from .models import Post
+from .models import Post, Favorite
 from .forms import UserForm
 
 class ViewIndex(ListView):
@@ -101,15 +101,33 @@ def userLogout(request):
 
 def detailedUpVoted(request, image_id):
     post = get_object_or_404(Post, pk=image_id)
-    post.isUpVoted = not post.isUpVoted
-    post.save()
+    if request.user.is_authenticated():
+        user = request.user
+    else:
+        raise Http404
+    try:
+        obj = Favorite.objects.get(post=post, user=user)
+        obj.isUpVoted = not obj.isUpVoted
+        obj.save()
+    except Favorite.DoesNotExist:
+        obj = Favorite(post=post, user=user, isUpVoted=True, isFavorite=False)
+        obj.save()
     return render(request, 'images/detail.html', {'post': post})
 
 
 def generalUpVoted(request, image_id):
     post = get_object_or_404(Post, pk=image_id)
-    post.isUpVoted = not post.isUpVoted
-    post.save()
+    if request.user.is_authenticated():
+        user = request.user
+    else:
+        raise Http404
+    try:
+        obj = Favorite.objects.get(post=post, user=user)
+        obj.isUpVoted = not obj.isUpVoted
+        obj.save()
+    except Favorite.DoesNotExist:
+        obj = Favorite(post=post, user=user, isUpVoted=True, isFavorite=False)
+        obj.save()
     return HttpResponseRedirect("/images/")
 
 def detailedFaved(request, image_id):

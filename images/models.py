@@ -7,8 +7,6 @@ class Post(models.Model):
     author = models.ForeignKey(User)
     title = models.CharField(max_length=250)
     image = models.FileField()
-    isUpVoted = models.BooleanField(default=False)
-    isFaved = models.BooleanField(default=False)
 
     def get_absolute_url(self):
         return reverse('images:detail', kwargs={'pk': self.pk})
@@ -24,3 +22,11 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.content
+
+
+class Favorite(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    isFavorite = models.BooleanField(default=False)
+    isUpVoted = models.BooleanField(default=False)
+
