@@ -29,6 +29,9 @@ urlpatterns = [
     # /images/image/pk/delete
     url(r'image/(?P<pk>[0-9]+)/delete$', views.DeletePost.as_view(), name='DeletePost'),
 
+    # /images/imageID/upVote
+    url(r'(?P<image_id>[0-9]+)/upVote/$', views.upVoted, name='upVoted'),
+
     # /images/imageID/UpVoted
     url(r'(?P<image_id>[0-9]+)/upVoted/$', views.detailedUpVoted, name='detailedUpVoted'),
 

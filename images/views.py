@@ -1,6 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
+try:
+    from django.utils import simplejson as json
+except ImportError:
+    import json
 from django.views.generic import ListView, DeleteView, DetailView, CreateView, UpdateView, View
 from django.core.urlresolvers import reverse_lazy
 from .models import Post, Favorite
@@ -113,6 +117,26 @@ def detailedUpVoted(request, image_id):
         obj = Favorite(post=post, user=user, isUpVoted=True, isFavorite=False)
         obj.save()
     return render(request, 'images/detail.html', {'post': post})
+
+
+def upVoted(request, image_id):
+    message = None
+    if request.user.is_authenticated():
+        post = get_object_or_404(Post, pk=image_id)
+        user = request.user
+    else:
+        raise Http404
+    try:
+        obj = Favorite.objects.get(post=post, user=user)
+        obj.isUpVoted = not obj.isUpVoted
+        obj.save()
+        message = 'OK'
+    except Favorite.DoesNotExist:
+        obj = Favorite(post=post, user=user, isUpVoted=True, isFavorite=False)
+        obj.save()
+        message = 'KO'
+    ctx = {'message': message}
+    return HttpResponse(json.dumps(ctx), content_type='application/json')
 
 
 def generalUpVoted(request, image_id):
