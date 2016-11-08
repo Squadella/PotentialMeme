@@ -10,6 +10,7 @@ from django.core.urlresolvers import reverse_lazy
 from .models import Post, Favorite
 from .forms import UserForm
 
+
 class ViewIndex(ListView):
     template_name = 'images/index.html'
     model = Post
@@ -30,6 +31,7 @@ class CreatePost(CreateView):
         form.instance.author = self.request.user
         return super(CreatePost, self).form_valid(form)
 
+
 class UpdatePost(UpdateView):
     model = Post
     fields = ['title', 'image']
@@ -45,6 +47,7 @@ class DeletePost(DeleteView):
             # Can't delete the object because the user isn't the author.
             raise Http404
         return obj
+
 
 class UserFormRegistration(View):
     form_class = UserForm
@@ -103,22 +106,6 @@ def userLogout(request):
     return redirect('images:index')
 
 
-def detailedUpVoted(request, image_id):
-    post = get_object_or_404(Post, pk=image_id)
-    if request.user.is_authenticated():
-        user = request.user
-    else:
-        raise Http404
-    try:
-        obj = Favorite.objects.get(post=post, user=user)
-        obj.isUpVoted = not obj.isUpVoted
-        obj.save()
-    except Favorite.DoesNotExist:
-        obj = Favorite(post=post, user=user, isUpVoted=True, isFavorite=False)
-        obj.save()
-    return render(request, 'images/detail.html', {'post': post})
-
-
 def upVoted(request, image_id):
     message = None
     if request.user.is_authenticated():
@@ -139,26 +126,12 @@ def upVoted(request, image_id):
     return HttpResponse(json.dumps(ctx), content_type='application/json')
 
 
-def generalUpVoted(request, image_id):
-    post = get_object_or_404(Post, pk=image_id)
-    if request.user.is_authenticated():
-        user = request.user
-    else:
-        raise Http404
-    try:
-        obj = Favorite.objects.get(post=post, user=user)
-        obj.isUpVoted = not obj.isUpVoted
-        obj.save()
-    except Favorite.DoesNotExist:
-        obj = Favorite(post=post, user=user, isUpVoted=True, isFavorite=False)
-        obj.save()
-    return HttpResponseRedirect("/images/")
-
 def detailedFaved(request, image_id):
     post = get_object_or_404(Post, pk=image_id)
     post.isFaved = not post.isFaved
     post.save()
     return render(request, 'images/detail.html', {'post': post})
+
 
 def generalFaved(request, image_id):
     post = get_object_or_404(Post, pk=image_id)

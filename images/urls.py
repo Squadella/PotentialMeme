@@ -32,12 +32,6 @@ urlpatterns = [
     # /images/imageID/upVote
     url(r'(?P<image_id>[0-9]+)/upVote/$', views.upVoted, name='upVoted'),
 
-    # /images/imageID/UpVoted
-    url(r'(?P<image_id>[0-9]+)/upVoted/$', views.detailedUpVoted, name='detailedUpVoted'),
-
-    # /images/imageID/UpVoted
-    url(r'(?P<image_id>[0-9]+)/gupVoted/$', views.generalUpVoted, name='generalUpVoted'),
-
     # /image/imageID/faved
     url(r'(?P<image_id>[0-9]+)/Faved/$', views.detailedFaved, name='detailedFaved'),
 
