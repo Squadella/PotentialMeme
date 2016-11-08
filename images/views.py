@@ -28,7 +28,7 @@ class ViewFavorites(ListView):
         if self.request.user.is_authenticated():
             user = self.request.user
             return Favorite.objects.filter(isFavorite=True, user=user)
-        raise Http404
+        return redirect('images:login')
 
 
 class ViewDetail(DetailView):
@@ -41,8 +41,10 @@ class CreatePost(CreateView):
     fields = ['title', 'image']
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super(CreatePost, self).form_valid(form)
+        if self.request.user.is_authenticated():
+            form.instance.author = self.request.user
+            return super(CreatePost, self).form_valid(form)
+        return redirect('images:login')
 
 
 class UpdatePost(UpdateView):
@@ -125,7 +127,7 @@ def upVoted(request, image_id):
         post = get_object_or_404(Post, pk=image_id)
         user = request.user
     else:
-        raise Http404
+        return redirect('images:login')
     try:
         obj = Favorite.objects.get(post=post, user=user)
         obj.isUpVoted = not obj.isUpVoted
@@ -145,7 +147,7 @@ def fav(request, image_id):
         post = get_object_or_404(Post, pk=image_id)
         user = request.user
     else:
-        raise Http404
+        return redirect('images:login')
     try:
         obj = Favorite.objects.get(post=post, user=user)
         obj.isFavorite = not obj.isFavorite
