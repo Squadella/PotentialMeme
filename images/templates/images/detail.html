@@ -12,10 +12,9 @@
     <p>{{ errorMessage }}</p>
 {% endif %}
 
-<form action="{% url 'images:detailedUpVoted' post.id %}" method="post">
-    {% csrf_token %}
-    <input type="submit" value="Up Vote">
-</form>
+<li>
+    <input type="button" id="{{ post.id }}" name="Up Vote" value="upVote">
+</li>
 <form action="{% url 'images:detailedFaved' post.id %}" method="post">
     {% csrf_token %}
     <input type="submit" value="Fav">
