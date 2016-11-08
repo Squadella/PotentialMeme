@@ -18,6 +18,19 @@ class ViewIndex(ListView):
     context_object_name = 'allPosts'
 
 
+class ViewFavorites(ListView):
+    template_name = 'images/favorites.html'
+    model = Favorite
+    paginate_by = 15
+    context_object_name = 'allPosts'
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated():
+            user = self.request.user
+            return Favorite.objects.filter(isFavorite=True, user=user)
+        raise Http404
+
+
 class ViewDetail(DetailView):
     template_name = 'images/detail.html'
     model = Post

@@ -1,0 +1,45 @@
+<!--Includes, to be moved in a general html file-->
+{% load staticfiles %}
+
+
+<a href="{% url 'images:CreatePost' %}">upload
+{% if allPosts %}
+    <ul>
+        {% for post in allPosts %}
+            <li>
+                <input type="button" id="{{ post.post.id }}" name="Up Vote" value="upVote">
+                <a href="{% url 'images:detail' post.post.id %}">{{ post.post.title }}
+                    <form data-id="{{ post.post.id }}" action="/images/{{ post.post.id }}/" method="post" id="favorite-button">
+                        {% csrf_token %}
+
+                    </form>
+                    <form action="{% url 'images:DeletePost' post.post.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="DELETE">
+                    </form>
+                </a>
+            </li>
+            <span><input type="button" id="{{ post.post.id }}" value="Fav"></span>
+        {% endfor %}
+    </ul>
+    {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="/images/favorites?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="/images/favorites?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+{%  else %}
+    <h3>Nothing to show here</h3>
+{%  endif %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="{% static 'js/main.js' %}"></script>

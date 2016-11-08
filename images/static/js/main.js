@@ -3,7 +3,10 @@ $('li input').click(function(e){
     var id = $(this).attr('id');
 
     $.ajax({
-        url:'/images/'+id+'/upVote/'
+        url:'/images/'+id+'/upVote/',
+        success: function () {
+            window.location.reload(true);
+        }
     })
 })
 
@@ -12,6 +15,9 @@ $('span input').click(function(e){
     var id = $(this).attr('id');
 
     $.ajax({
-        url:'/images/'+id+'/fav/'
+        url:'/images/'+id+'/fav/',
+        success: function () {
+            window.location.reload(true);
+        }
     })
 })

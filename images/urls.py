@@ -8,6 +8,9 @@ urlpatterns = [
     # /images/
     url(r'^$', views.ViewIndex.as_view(), name='index'),
 
+    # /images/favorites/
+    url(r'^favorites/$', views.ViewFavorites.as_view(), name='favorites'),
+
     # /images/register/
     url(r'^register/$', views.UserFormRegistration.as_view(), name='register'),
 
