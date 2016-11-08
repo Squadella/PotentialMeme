@@ -126,15 +126,21 @@ def upVoted(request, image_id):
     return HttpResponse(json.dumps(ctx), content_type='application/json')
 
 
-def detailedFaved(request, image_id):
-    post = get_object_or_404(Post, pk=image_id)
-    post.isFaved = not post.isFaved
-    post.save()
-    return render(request, 'images/detail.html', {'post': post})
-
-
-def generalFaved(request, image_id):
-    post = get_object_or_404(Post, pk=image_id)
-    post.isFaved = not post.isFaved
-    post.save()
-    return HttpResponseRedirect("/images/")
+def fav(request, image_id):
+    message = None
+    if request.user.is_authenticated():
+        post = get_object_or_404(Post, pk=image_id)
+        user = request.user
+    else:
+        raise Http404
+    try:
+        obj = Favorite.objects.get(post=post, user=user)
+        obj.isFavorite = not obj.isFavorite
+        obj.save()
+        message = 'OK'
+    except Favorite.DoesNotExist:
+        obj = Favorite(post=post, user=user, isUpVoted=False, isFavorite=True)
+        obj.save()
+        message = 'KO'
+    ctx = {'message': message}
+    return HttpResponse(json.dumps(ctx), content_type='application/json')
