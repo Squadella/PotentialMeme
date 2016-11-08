@@ -1,16 +1,17 @@
+<!--Includes, to be moved in a general html file-->
+{% load staticfiles %}
+
+
+<a href="{% url 'images:CreatePost' %}">upload
 {% if allPosts %}
-    <a href="{% url 'images:CreatePost' %}">upload
     <ul>
         {% for post in allPosts %}
             <li>
+                <input type="button" id="{{ post.id }}" name="Up Vote" value="upVote">
                 <a href="{% url 'images:detail' post.id %}">{{ post.title }}
-                    <form action="{% url 'images:generalUpVoted' post.id %}" method="post">
+                    <form data-id="{{ post.id }}" action="/images/{{ post.id }}/" method="post" id="favorite-button">
                         {% csrf_token %}
-                        <input type="submit" value="upVote">
-                    </form>
-                    <form action="{% url 'images:generalFaved' post.id %}" method="post">
-                        {% csrf_token %}
-                        <input type="submit" value="Fav">
+
                     </form>
                     <form action="{% url 'images:DeletePost' post.id %}" method="post">
                         {% csrf_token %}
@@ -18,6 +19,7 @@
                     </form>
                 </a>
             </li>
+            <span><input type="button" id="{{ post.id }}" value="Fav"></span>
         {% endfor %}
     </ul>
     {% if is_paginated %}
@@ -38,3 +40,6 @@
 {%  else %}
     <h3>Nothing to show here</h3>
 {%  endif %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="{% static 'js/main.js' %}"></script>

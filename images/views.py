@@ -1,10 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
+try:
+    from django.utils import simplejson as json
+except ImportError:
+    import json
 from django.views.generic import ListView, DeleteView, DetailView, CreateView, UpdateView, View
 from django.core.urlresolvers import reverse_lazy
 from .models import Post, Favorite
 from .forms import UserForm
+
 
 class ViewIndex(ListView):
     template_name = 'images/index.html'
@@ -26,6 +31,7 @@ class CreatePost(CreateView):
         form.instance.author = self.request.user
         return super(CreatePost, self).form_valid(form)
 
+
 class UpdatePost(UpdateView):
     model = Post
     fields = ['title', 'image']
@@ -41,6 +47,7 @@ class DeletePost(DeleteView):
             # Can't delete the object because the user isn't the author.
             raise Http404
         return obj
+
 
 class UserFormRegistration(View):
     form_class = UserForm
@@ -99,9 +106,10 @@ def userLogout(request):
     return redirect('images:index')
 
 
-def detailedUpVoted(request, image_id):
-    post = get_object_or_404(Post, pk=image_id)
+def upVoted(request, image_id):
+    message = None
     if request.user.is_authenticated():
+        post = get_object_or_404(Post, pk=image_id)
         user = request.user
     else:
         raise Http404
@@ -109,35 +117,30 @@ def detailedUpVoted(request, image_id):
         obj = Favorite.objects.get(post=post, user=user)
         obj.isUpVoted = not obj.isUpVoted
         obj.save()
+        message = 'OK'
     except Favorite.DoesNotExist:
         obj = Favorite(post=post, user=user, isUpVoted=True, isFavorite=False)
         obj.save()
-    return render(request, 'images/detail.html', {'post': post})
+        message = 'KO'
+    ctx = {'message': message}
+    return HttpResponse(json.dumps(ctx), content_type='application/json')
 
 
-def generalUpVoted(request, image_id):
-    post = get_object_or_404(Post, pk=image_id)
+def fav(request, image_id):
+    message = None
     if request.user.is_authenticated():
+        post = get_object_or_404(Post, pk=image_id)
         user = request.user
     else:
         raise Http404
     try:
         obj = Favorite.objects.get(post=post, user=user)
-        obj.isUpVoted = not obj.isUpVoted
+        obj.isFavorite = not obj.isFavorite
         obj.save()
+        message = 'OK'
     except Favorite.DoesNotExist:
-        obj = Favorite(post=post, user=user, isUpVoted=True, isFavorite=False)
+        obj = Favorite(post=post, user=user, isUpVoted=False, isFavorite=True)
         obj.save()
-    return HttpResponseRedirect("/images/")
-
-def detailedFaved(request, image_id):
-    post = get_object_or_404(Post, pk=image_id)
-    post.isFaved = not post.isFaved
-    post.save()
-    return render(request, 'images/detail.html', {'post': post})
-
-def generalFaved(request, image_id):
-    post = get_object_or_404(Post, pk=image_id)
-    post.isFaved = not post.isFaved
-    post.save()
-    return HttpResponseRedirect("/images/")
+        message = 'KO'
+    ctx = {'message': message}
+    return HttpResponse(json.dumps(ctx), content_type='application/json')

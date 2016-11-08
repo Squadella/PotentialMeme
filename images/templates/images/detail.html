@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <h1>{{ post.title }} </h1>
 <img src="{{ post.image.url }}">
 <p>{% if post.isUpVoted%}
@@ -11,11 +12,10 @@
     <p>{{ errorMessage }}</p>
 {% endif %}
 
-<form action="{% url 'images:detailedUpVoted' post.id %}" method="post">
-    {% csrf_token %}
-    <input type="submit" value="Up Vote">
-</form>
-<form action="{% url 'images:detailedFaved' post.id %}" method="post">
-    {% csrf_token %}
-    <input type="submit" value="Fav">
-</form>
+<li>
+    <input type="button" id="{{ post.id }}" name="Up Vote" value="upVote">
+</li>
+    <span><input type="button" id="{{ post.id }}" value="Fav"></span>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="{% static 'js/main.js' %}"></script>
