@@ -38,5 +38,8 @@ urlpatterns = [
     # /images/imageID/fav
     url(r'(?P<image_id>[0-9]+)/fav/$', views.fav, name='fav'),
 
+    # /images/image/pk/delete
+    url(r'(?P<pk>[0-9]+)/deleteComment$', views.DeleteComment.as_view(), name='DeleteComment'),
+
 ]
 

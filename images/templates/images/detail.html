@@ -15,7 +15,25 @@
 <li>
     <input type="button" id="{{ post.id }}" name="Up Vote" value="upVote">
 </li>
-    <span><input type="button" id="{{ post.id }}" value="Fav"></span>
+<span><input type="button" id="{{ post.id }}" value="Fav"></span>
+
+<p>form creation comment</p>
+
+{% if post.comment_set.all %}
+    {% for comment in post.comment_set.all %}
+        <ul>
+            <li>{{ comment.author }}</li>
+            <li>{{ comment.content }}</li>
+            <input type="button" id="{{ comment.id }}" value="Edit">
+        </ul>
+        {% if user.is_authenticated and user == comment.author %}
+            <form action="{% url 'images:DeleteComment' comment.pk %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="DELETE">
+            </form>
+        {% endif %}
+    {% endfor %}
+{% endif %}
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="{% static 'js/main.js' %}"></script>

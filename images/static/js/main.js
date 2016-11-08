@@ -1,3 +1,4 @@
+//Up vote event
 $('li input').click(function(e){
     e.preventDefault();
     var id = $(this).attr('id');
@@ -10,6 +11,7 @@ $('li input').click(function(e){
     })
 })
 
+//Favorite event
 $('span input').click(function(e){
     e.preventDefault();
     var id = $(this).attr('id');
