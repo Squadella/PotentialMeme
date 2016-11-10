@@ -8,7 +8,7 @@ except ImportError:
 from django.views.generic import ListView, DeleteView, DetailView, CreateView, UpdateView, View
 from django.core.urlresolvers import reverse_lazy
 from .models import Post, Favorite, Comment
-from .forms import UserForm
+from .forms import UserForm, forms
 
 
 class ViewIndex(ListView):
@@ -45,6 +45,12 @@ class CreatePost(CreateView):
             form.instance.author = self.request.user
             return super(CreatePost, self).form_valid(form)
         return redirect('images:login')
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
 
 
 class UpdatePost(UpdateView):
@@ -171,3 +177,22 @@ def fav(request, image_id):
         message = 'KO'
     ctx = {'message': message}
     return HttpResponse(json.dumps(ctx), content_type='application/json')
+
+
+def createComment(request, image_id):
+    if request.user.is_authenticated():
+        post = get_object_or_404(Post, pk=image_id)
+        user = request.user
+    else:
+        return redirect('images:login')
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = user
+            comment.save()
+            return redirect('images:detail', pk=post.pk)
+    else:
+        form = CommentForm()
+    return render(request, 'images/comment_form.html', {'form': form})
