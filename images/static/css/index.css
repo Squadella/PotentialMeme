@@ -1,0 +1,20 @@
+form
+{
+        display:inline;
+}
+.center
+{
+    margin-left: auto;
+    margin-right: auto;
+    background-color: transparent;
+    width: 800px;
+    height: auto;
+    text-align: center;
+}
+.navbar{
+    background-color: transparent;
+
+}
+li{
+    list-style: none;
+}

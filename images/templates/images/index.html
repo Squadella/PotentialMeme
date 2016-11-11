@@ -1,44 +1,56 @@
 <!--Includes, to be moved in a general html file-->
+{% extends 'images/navbar.html' %}
+
+{% block body %}
 {% load staticfiles %}
+<link rel="stylesheet" href="{% static '/css/index.css' %}">
 
+<div class = "center" >
+    {% if allPosts %}
+        <ul>
+            {% for post in allPosts %}
+                <li>
+                    <a href="{% url 'images:detail' post.id %}"><img src="{{ post.image.url }}" width="304" height = "172"><br></a>
+                    <a href="{% url 'images:detail' post.id %}">{{ post.title }}</a><br>
 
-<a href="{% url 'images:CreatePost' %}">upload</a>
-{% if allPosts %}
-    <ul>
-        {% for post in allPosts %}
-            <li>
-                <input type="button" id="{{ post.id }}" name="Up Vote" value="upVote">
-                <a href="{% url 'images:detail' post.id %}">{{ post.title }}
-                    <form data-id="{{ post.id }}" action="/images/{{ post.id }}/" method="post" id="favorite-button">
-                        {% csrf_token %}
-                    </form>
-                    <form action="{% url 'images:DeletePost' post.id %}" method="post">
-                        {% csrf_token %}
-                        <input type="submit" value="DELETE">
-                    </form>
-                </a>
-            </li>
-            <span><input type="button" id="{{ post.id }}" value="Fav"></span>
-        {% endfor %}
-    </ul>
-    {% if is_paginated %}
-        <div class="pagination">
-            <span class="page-links">
-                {% if page_obj.has_previous %}
-                    <a href="/images?page={{ page_obj.previous_page_number }}">previous</a>
-                {% endif %}
-                <span class="current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                        <a><form>
+                        <input type="button" id="{{ post.id }}" name="Up Vote" value="upVote">
+                        </form></a>
+                        <a><form action="{% url 'images:DeletePost' post.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="DELETE">
+                        </form></a>
+                        <a><form action="{% url 'images:UpdatePost' post.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="Update">
+                        </form></a>
+
+                </li>
+                <a><span><input type="button" id="{{ post.id }}" value="Fav"></span></a>
+            {% endfor %}
+        </ul>
+        {% if is_paginated %}
+            <div class="pagination">
+                <span class="page-links">
+                    {% if page_obj.has_previous %}
+                        <a href="/images?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                    </span>
+                    {% if page_obj.has_next %}
+                        <a href="/images?page={{ page_obj.next_page_number }}">next</a>
+                    {% endif %}
                 </span>
-                {% if page_obj.has_next %}
-                    <a href="/images?page={{ page_obj.next_page_number }}">next</a>
-                {% endif %}
-            </span>
-        </div>
-    {% endif %}
-{%  else %}
-    <h3>Nothing to show here</h3>
-{%  endif %}
+            </div>
+        {% endif %}
+    {%  else %}
+        <h3>Nothing to show here</h3>
+    {%  endif %}
+    </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="{% static 'js/main.js' %}"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+    {% endblock %}
