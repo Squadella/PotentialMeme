@@ -23,11 +23,11 @@ urlpatterns = [
     # /images/pk
     url(r'^(?P<pk>[0-9]+)/$', views.ViewDetail.as_view(), name='detail'),
 
-    # /images/image/create/
-    url(r'image/create/$', views.CreatePost.as_view(), name='CreatePost'),
+    # /images/create/
+    url(r'create/$', views.CreatePost.as_view(), name='CreatePost'),
 
-    # /images/image/pk/
-    url(r'image/(?P<pk>[0-9]+)/$', views.UpdatePost.as_view(), name='UpdatePost'),
+    # /images/imageID/update
+    url(r'^(?P<pk>[0-9]+)/update/$', views.UpdatePost.as_view(), name='UpdatePost'),
 
     # /images/image/pk/delete
     url(r'image/(?P<pk>[0-9]+)/delete$', views.DeletePost.as_view(), name='DeletePost'),

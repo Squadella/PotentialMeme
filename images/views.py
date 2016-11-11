@@ -57,6 +57,11 @@ class UpdatePost(UpdateView):
     model = Post
     fields = ['title', 'image']
 
+    # Check if the user connected can edit the comment
+    def get_queryset(self):
+        querySet = super(UpdatePost, self).get_queryset()
+        return querySet.filter(author=self.request.user)
+
 
 class DeletePost(DeleteView):
     model = Post
