@@ -11,13 +11,13 @@
                 <a href="{% url 'images:detail' post.id %}">{{ post.title }}
                     <form data-id="{{ post.id }}" action="/images/{{ post.id }}/" method="post" id="favorite-button">
                         {% csrf_token %}
-                    </form>
-                    <form action="{% url 'images:DeletePost' post.id %}" method="post">
-                        {% csrf_token %}
-                        <input type="submit" value="DELETE">
-                    </form>
+                    </form
                 </a>
             </li>
+            <form action="{% url 'images:DeletePost' post.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="DELETE">
+            </form>
             <span><input type="button" id="{{ post.id }}" value="Fav"></span>
         {% endfor %}
     </ul>
