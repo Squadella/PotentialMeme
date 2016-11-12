@@ -6,29 +6,35 @@
 <link rel="stylesheet" href="{% static '/css/index.css' %}">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-<div class = "center" style="max-width: 500px" >
+<div class="mybackground">
     {% if allPosts %}
         <ul>
             {% for post in allPosts %}
-                <li>
-                    <a href="{% url 'images:detail' post.id %}"><img src="{{ post.image.url }}" class="img-responsive" style="max-width: 100%; height: auto; display: block;"><br></a>
-                    <a href="{% url 'images:detail' post.id %}">{{ post.title }}</a><br>
+                <div style="margin-top: 10px; width: 500px; margin-left: auto;margin-right: auto">
+                        <li>
+                        <div style="margin-bottom: 10px"><h3><u><a href="{% url 'images:detail' post.id %}">{{ post.title }}</a></u></h3></div>
+                        <a href="{% url 'images:detail' post.id %}"><img src="{{ post.image.url }}" class="img-responsive center" style="max-width: 95%; height: auto;"><br></a>
+                        <div style="float: left">
+                            <a><form>
+                            <input type="button" class="btn btn-info" id="{{ post.id }}" name="Up Vote" value="upVote">
+                            </form></a>
+                            <a><form action="{% url 'images:DeletePost' post.id %}" method="post">
+                                {% csrf_token %}
+                                <input type="submit" class="btn btn-info" value="DELETE">
+                            </form></a>
+                            <a><form action="{% url 'images:UpdatePost' post.id %}" method="post">
+                                {% csrf_token %}
+                                <input type="submit" class="btn btn-info" value="Update">
+                            </form></a>
+                        </div>
 
-                        <a><form>
-                        <input type="button" id="{{ post.id }}" name="Up Vote" value="upVote">
-                        </form></a>
-                        <a><form action="{% url 'images:DeletePost' post.id %}" method="post">
-                            {% csrf_token %}
-                            <input type="submit" value="DELETE">
-                        </form></a>
-                        <a><form action="{% url 'images:UpdatePost' post.id %}" method="post">
-                            {% csrf_token %}
-                            <input type="submit" value="Update">
-                        </form></a>
+                    </li>
+                    <div style="margin-left: 47%;"><a><span><input type="button" class="btn btn-info" id="{{ post.id }}" value="Fav"></span></a></div>
+                    <img src="{% static 'img/separator.png' %}" style="margin-left: auto;margin-right: auto; max-width: 100%;">
+                    </div>
+                {% endfor %}
 
-                </li>
-                <a><span><input type="button" id="{{ post.id }}" value="Fav"></span></a>
-            {% endfor %}
+
         </ul>
         {% if is_paginated %}
             <div class="pagination">
@@ -48,8 +54,8 @@
     {%  else %}
         <h3>Nothing to show here</h3>
     {%  endif %}
-    </div>
 
+</div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
