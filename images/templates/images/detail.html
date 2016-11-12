@@ -1,38 +1,49 @@
+{% extends 'images/navbar.html' %}
+
+{% block body %}
 {% load staticfiles %}
-<h1>{{ post.title }} </h1>
-<img src="{{ post.image.url }}">
-<p>{% if post.isUpVoted%}
-    Up Voted!
-{% endif %}</p>
-<p>{% if post.isFaved%}
-    Faved!
-{% endif %}</p>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static '/css/index.css' %}">
 
-{% if errorMessage %}
-    <p>{{ errorMessage }}</p>
-{% endif %}
 
-<li>
-    <input type="button" id="{{ post.id }}" name="Up Vote" value="upVote">
-</li>
-<span><input type="button" id="{{ post.id }}" value="Fav"></span>
 
-<a href="{% url 'images:comment' post.id%}">comment</a>
+<div style="border: solid 1px rgb(150, 150, 150); width: 1000px;margin-left: auto;margin-right: auto; height: 2000px">
+    <h1 style="margin-left: 50px">{{ post.title }} </h1>
+    <body>
+        <div style="margin-left: 50px;">
+            <div style="max-width: 700px">
+                  <a href="{{ post.image.url }}"><img src="{{ post.image.url }}"class="img-responsive" style="max-width: 100%; height: auto; display: block;"></a>
+          </div>
 
-{% if post.comment_set.all %}
-    {% for comment in post.comment_set.all %}
-        <ul>
-            <li>{{ comment.author }}</li>
-            <li>{{ comment.content }}</li>
-        </ul>
-        {% if user.is_authenticated and user == comment.author %}
-            <form action="{% url 'images:DeleteComment' comment.pk %}" method="post">
-                {% csrf_token %}
-                <input type="submit" value="DELETE">
-            </form>
-        {% endif %}
-    {% endfor %}
-{% endif %}
-
+          <div class="gauche">
+              <li style="list-style: none">
+                  <input type="button" id="{{ post.id }}" name="Up Vote" value="UpVote">
+              </li>
+          </div>
+          <div class="droite">
+              <span><input type="button" id="{{ post.id }}" value="Fav"></span>
+          </div>
+          <div style="margin-left: 20px; margin-top: 10px">
+              <a href="{% url 'images:comment' post.id%}">Comment</a>
+              {% if post.comment_set.all %}
+                  {% for comment in post.comment_set.all %}
+                      <div style="border: solid 1px rgb(150, 150, 150); margin-top: 3px; width: 500px">
+                          <h6><u>{{ comment.author }}</u></h6>
+                          <div style="margin-left: 5px"><li>{{ comment.content }}</li></div>
+                      </div>
+                      {% if user.is_authenticated and user == comment.author %}
+                          <form action="{% url 'images:DeleteComment' comment.pk %}" method="post">
+                              {% csrf_token %}
+                              <input type="submit" value="DELETE">
+                          </form>
+                      {% endif %}
+                  {% endfor %}
+              {% endif %}
+          </div>
+        </div>
+    </body>
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="{% static 'js/main.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Potential Meme</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</head>
+<body class="mybackground">
+
+    {% if user.is_authenticated %}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+                <!-- Logo -->
+                <div class="navbar-header">
+                    <a href="{% url 'images:index' %}" class="navbar-brand">Potential Meme</a>
+                </div>
+
+                <!-- Menu Items -->
+                <div>
+                    <ul class="nav navbar-nav">
+                        <li><a href="{% url 'images:CreatePost' %}">Create Post</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+
+                        <li>
+                            <a href="{% url 'images:logout' %}">
+                                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+    </nav>
+
+    {% else %}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+                <!-- Logo -->
+                <div class="navbar-header">
+                    <a href="/images" class="navbar-brand">Potential Meme</a>
+                </div>
+
+                <!-- Menu Items -->
+                <div>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="{% url 'images:register' %}">
+                                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Register
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'images:login' %}">
+                                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Login
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+        </div>
+    {% endif %}
+    {% block body %}
+    {% endblock %}
+</body>
+</html>
