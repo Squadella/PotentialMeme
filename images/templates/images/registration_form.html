@@ -1,9 +1,15 @@
 {% extends 'images/navbar.html' %}
 
 {% block body %}
-<form action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% include 'images/form-template.html' %}
-    <button type="submit">Submit</button>
-</form>
+    {% load staticfiles %}
+<link rel="stylesheet" href="{% static '/css/index.css' %}">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<div style="background-image: url({% static '/img/motif.jpg' %});height: 1000px">
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% include 'images/form-template.html' %}
+        <button type="submit">Submit</button>
+    </form>
+</div>
 {% endblock %}

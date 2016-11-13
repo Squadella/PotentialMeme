@@ -6,28 +6,42 @@
 <link rel="stylesheet" href="{% static '/css/index.css' %}">
 
 
-
-<div style="border: solid 1px rgb(150, 150, 150); width: 1000px;margin-left: auto;margin-right: auto; height: 2000px">
+<div style="background-image: url({% static '/img/motif.jpg' %});height: 1000px">
+<div style="background-color: rgba(0,0,0,0.5); margin-left: auto; margin-right: auto; width: 800px;height: 1000px;">
+    <div style="margin-left: auto; margin-right: auto; width: 800px;">
     <h1 style="margin-left: 50px">{{ post.title }} </h1>
     <body>
-        <div style="margin-left: 50px;">
+        <div style="margin-left: 50px; opacity: 1">
             <div style="max-width: 700px">
                   <a href="{{ post.image.url }}"><img src="{{ post.image.url }}"class="img-responsive" style="max-width: 100%; height: auto; display: block;"></a>
           </div>
 
           <div class="gauche">
               <li style="list-style: none">
-                  <input type="button" id="{{ post.id }}" name="Up Vote" value="UpVote">
+                  <input type="button" class="btn btn-success" id="{{ post.id }}" name="Up Vote" value="UpVote">
+
+
+
               </li>
           </div>
           <div class="droite">
-              <span><input type="button" id="{{ post.id }}" value="Fav"></span>
+              <span><input style="margin-left: 4%" type="button" class="btn btn-warning" id="{{ post.id }}" value="Fav"></span>
+              <div class="btn btn-primary"><a href="{% url 'images:comment' post.id%}" style="color: white">Comment</a></div>
+                    <a><form action="{% url 'images:UpdatePost' post.id %}" method="post">
+                        {% csrf_token %}
+                             <input type="submit" class="btn btn-info" value="Update">
+                    </form></a>
+                    <a><form action="{% url 'images:DeletePost' post.id %}" method="post">
+                              {% csrf_token %}
+                              <input type="submit" class="btn btn-danger" value="DELETE">
+                    </form></a>
+
           </div>
           <div style="margin-left: 20px; margin-top: 10px">
-              <a href="{% url 'images:comment' post.id%}">Comment</a>
+
               {% if post.comment_set.all %}
                   {% for comment in post.comment_set.all %}
-                      <div style="border: solid 1px rgb(150, 150, 150); margin-top: 3px; width: 500px">
+                      <div style="background-color: white;border: solid 1px rgb(150, 150, 150); margin-top: 3px; width: 500px">
                           <h6><u>{{ comment.author }}</u></h6>
                           <div style="margin-left: 5px"><li>{{ comment.content }}</li></div>
                       </div>
@@ -42,7 +56,10 @@
           </div>
         </div>
     </body>
-</div>
+    </div>
+    </div>
+    </div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="{% static 'js/main.js' %}"></script>
 
