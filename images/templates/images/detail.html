@@ -13,23 +13,11 @@
             <body>
             <div style="margin-left: 50px; opacity: 1">
                 <div style="max-width: 700px">
-                    <a href="{{ post.image.url }}"><img src="{{ post.image.url }}"class="img-responsive" style="max-width: 100%; height: auto; display: block;"></a>
+                    <a href="{{ post.image.url }}"><img src="{{ post.image.url }}"class="img-responsive" style="max-width: 100%; height: auto; display: block; margin-bottom: 10px"></a>
                 </div>
                 {% if user.is_authenticated %}
-                    <div class="gauche">
-                        <li style="list-style: none">
-                            {% for upVote in post.favorite_set.all %}
-                                {% if upVote.user == user %}
-                                    {% if upVote.isUpVoted == True %}
-                                        <input type="button" class="btn btn-success" id="{{ post.id }}" name="Up Vote" value="DownVote">
-                                    {% else %}
-                                        <input type="button" class="btn btn-success" id="{{ post.id }}" name="Up Vote" value="UpVote">
-                                    {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        </li>
-                    </div>
-                    <div class="droite">
+
+                    <div class="droite" style="margin-left: 0%; float: left; width: 45%">
                         {% for upVote in post.favorite_set.all %}
                             {% if upVote.user == user %}
                                 {% if upVote.isFavorite == True %}
@@ -49,7 +37,22 @@
                             <input type="submit" class="btn btn-danger" value="DELETE">
                         </form></a>
                     </div>
+                    <div style="margin-left: 80%">
+                        <li style="list-style: none">
+                            {% for upVote in post.favorite_set.all %}
+                                {% if upVote.user == user %}
+                                    {% if upVote.isUpVoted == True %}
+                                        <input type="button" class="btn btn-danger" id="{{ post.id }}" name="Up Vote" value="DownVote">
+                                    {% else %}
+                                        <input type="button" class="btn btn-success" id="{{ post.id }}" name="Up Vote" value="UpVote">
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </li>
+                    </div>
                 {% endif %}
+                <br>
+                <br>
                 <div style="margin-left: 20px; margin-top: 10px">
                     {% if post.comment_set.all %}
                         {% for comment in post.comment_set.all %}

@@ -19,6 +19,7 @@
                         <div style="float: left">
                             <a><form>
 
+
                                         <input type="button" class="btn btn-success" id="{{ post.id }}" name="Up Vote" value="UpVote">
 
 
@@ -35,7 +36,16 @@
                         </div>
 
                     </li>
-                    <div style="margin-left: 47%;"><a><span><input type="button" class="btn btn-warning" id="{{ post.id }}" value="Fav"></span></a></div>
+                    {% for upVote in post.favorite_set.all %}
+                            {% if upVote.user == user %}
+                                {% if upVote.isFavorite == True %}
+                                    <div style="margin-left: 47%;"><a><span><input type="button" class="btn btn-warning" id="{{ post.id }}" value="unFav"></span></a></div>
+                                {% else %}
+                                    <div style="margin-left: 47%;"><a><span><input type="button" class="btn btn-warning" id="{{ post.id }}" value="Fav"></span></a></div>
+                                {% endif %}
+                            {% endif %}
+                    {% endfor %}
+
                     {% endif %}
                     <img src="{% static 'img/separator.png' %}" style="margin-left: auto;margin-right: auto; max-width: 100%;">
                     </div>
