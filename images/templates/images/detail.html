@@ -16,8 +16,21 @@
                     <a href="{{ post.image.url }}"><img src="{{ post.image.url }}"class="img-responsive" style="max-width: 100%; height: auto; display: block; margin-bottom: 10px"></a>
                 </div>
                 {% if user.is_authenticated %}
-
-                    <div class="droite" style="margin-left: 0%; float: left; width: 45%">
+                    <div class="gauche">
+                        <li style="list-style: none">
+                            {% for upVote in post.favorite_set.all %}
+                                {% if upVote.user == user %}
+                                    {% if upVote.isUpVoted == True %}
+                                        <input type="button" class="btn btn-success" id="{{ post.id }}" name="Up Vote" value="DownVote">
+                                    {% else %}
+                                        <input type="button" class="btn btn-success" id="{{ post.id }}" name="Up Vote" value="UpVote">
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </li>
+                    </div>
+                    <div class="droite">
+                    {% if post.favorite_set.all %}
                         {% for upVote in post.favorite_set.all %}
                             {% if upVote.user == user %}
                                 {% if upVote.isFavorite == True %}
@@ -27,6 +40,9 @@
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
+                    {% else %}
+                        <span><input style="margin-left: 4%" type="button" class="btn btn-warning" id="{{ post.id }}" value="Fav"></span>
+                    {% endif %}
                         <div class="btn btn-primary"><a href="{% url 'images:comment' post.id%}" style="color: white">Comment</a></div>
                         <a><form action="{% url 'images:UpdatePost' post.id %}" method="post">
                             {% csrf_token %}
@@ -45,7 +61,7 @@
                                         <input type="button" class="btn btn-danger" id="{{ post.id }}" name="Up Vote" value="DownVote">
                                     {% else %}
                                         <input type="button" class="btn btn-success" id="{{ post.id }}" name="Up Vote" value="UpVote">
-                                    {% endif %}
+                {% endif %}
                                 {% endif %}
                             {% endfor %}
                         </li>
