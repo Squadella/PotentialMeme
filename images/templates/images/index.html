@@ -6,21 +6,27 @@
 <link rel="stylesheet" href="{% static '/css/index.css' %}">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-<div class="mybackground">
+<div style="background-image: url({% static '/img/motif.jpg' %});">
     {% if allPosts %}
         <ul>
             {% for post in allPosts %}
+                <div style="background-color: rgba(0,0,0,0.5);margin-top: 10px; width: 800px; margin-left: auto;margin-right: auto">
                 <div style="margin-top: 10px; width: 500px; margin-left: auto;margin-right: auto">
                         <li>
-                        <div style="margin-bottom: 10px"><h3><u><a href="{% url 'images:detail' post.id %}">{{ post.title }}</a></u></h3></div>
+                        <div style="margin-bottom: 10px; float: left; margin-left: 40%; height: auto"><h3><u><a href="{% url 'images:detail' post.id %}" style="color: white">{{ post.title }}</a></u></h3></div>
                         <a href="{% url 'images:detail' post.id %}"><img src="{{ post.image.url }}" class="img-responsive center" style="max-width: 95%; height: auto;"><br></a>
+                        {% if user.is_authenticated %}
                         <div style="float: left">
                             <a><form>
-                            <input type="button" class="btn btn-info" id="{{ post.id }}" name="Up Vote" value="upVote">
+
+                                        <input type="button" class="btn btn-success" id="{{ post.id }}" name="Up Vote" value="UpVote">
+
+
+
                             </form></a>
                             <a><form action="{% url 'images:DeletePost' post.id %}" method="post">
                                 {% csrf_token %}
-                                <input type="submit" class="btn btn-info" value="DELETE">
+                                <input type="submit" class="btn btn-danger" value="DELETE">
                             </form></a>
                             <a><form action="{% url 'images:UpdatePost' post.id %}" method="post">
                                 {% csrf_token %}
@@ -29,9 +35,11 @@
                         </div>
 
                     </li>
-                    <div style="margin-left: 47%;"><a><span><input type="button" class="btn btn-info" id="{{ post.id }}" value="Fav"></span></a></div>
+                    <div style="margin-left: 47%;"><a><span><input type="button" class="btn btn-warning" id="{{ post.id }}" value="Fav"></span></a></div>
+                    {% endif %}
                     <img src="{% static 'img/separator.png' %}" style="margin-left: auto;margin-right: auto; max-width: 100%;">
                     </div>
+                </div>
                 {% endfor %}
 
 

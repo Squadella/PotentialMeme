@@ -1,22 +1,30 @@
 {% extends 'images/navbar.html' %}
 
 {% block body %}
+ {% load staticfiles %}
+<link rel="stylesheet" href="{% static '/css/index.css' %}">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-{% if user.is_active %}
-    <p>Authenticated already</p>
-{% else %}
-    <form action="" method="post" enctype="multipart/form-data" class = "colonne">
-        {% csrf_token %}
-        <label for="id_username">
-            Username:
-        </label>
-        <input id="id_username" maxlength="30" name="username" type="text" class ="colonne">
-        <label for="id_password">
-            Password:
-        </label>
-        <input id="id_password" maxlength="30" name="password" type="password">
-        <button type="submit">Submit</button>
-    </form>
-{% endif %}
 
+<div style="background-image: url({% static '/img/motif.jpg' %}); height: 1000px">
+<div style="background-color: rgba(0,0,0,0.5); text-align: center; height: 100px">
+
+    {% if user.is_active %}
+        <p style="margin-top: ">Authenticated already</p>
+    {% else %}
+        <form action="" method="post" enctype="multipart/form-data" class = "colonne">
+            {% csrf_token %}
+            <label for="id_username">
+                <div style="color: white; margin-top: 50px">Username:</div>
+            </label>
+            <input id="id_username" maxlength="30" name="username" type="text" class ="colonne">
+            <label for="id_password">
+                <div style="color: white; margin-top: 50px">Password:</div>
+            </label>
+            <input id="id_password" maxlength="30" name="password" type="password">
+            <button class="btn btn-info" type="submit">Submit</button>
+        </form>
+    {% endif %}
+</div>
+</div>
 {% endblock %}
