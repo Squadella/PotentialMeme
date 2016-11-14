@@ -15,7 +15,7 @@
             <div style="max-width: 700px">
                   <a href="{{ post.image.url }}"><img src="{{ post.image.url }}"class="img-responsive" style="max-width: 100%; height: auto; display: block;"></a>
           </div>
-
+        {% if user.is_authenticated %}
           <div class="gauche">
               <li style="list-style: none">
                   <input type="button" class="btn btn-success" id="{{ post.id }}" name="Up Vote" value="UpVote">
@@ -37,6 +37,7 @@
                     </form></a>
 
           </div>
+            {% endif %}
           <div style="margin-left: 20px; margin-top: 10px">
 
               {% if post.comment_set.all %}
