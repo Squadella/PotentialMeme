@@ -31,11 +31,6 @@
                                 {% else %}
                                     <input type="button" class="btn btn-success" id="{{ post.id }}" name="Up Vote" value="UpVote">
                                 {% endif %}
-
-
-
-
-
                             </form></a>
                             <a><form action="{% url 'images:DeletePost' post.id %}" method="post">
                                 {% csrf_token %}
@@ -46,7 +41,6 @@
                                 <input type="submit" class="btn btn-info" value="Update">
                             </form></a>
                         </div>
-
                     </li>
                     {% if post.favorite_set.all %}
                         {% for upVote in post.favorite_set.all %}
@@ -66,9 +60,7 @@
                     <img src="{% static 'img/separator.png' %}" style="margin-left: auto;margin-right: auto; max-width: 100%;">
                     </div>
                 </div>
-                {% endfor %}
-
-
+            {% endfor %}
         </ul>
         {% if is_paginated %}
             <div class="pagination">
