@@ -27,7 +27,7 @@
                     {% else %}
                         <span><input style="margin-left: 4%" type="button" class="btn btn-warning" id="{{ post.id }}" value="Fav"></span>
                     {% endif %}
-                        <div class="btn btn-primary"><a href="{% url 'images:comment' post.id%}" style="color: white">Comment</a></div>
+                        <a href="{% url 'images:comment' post.id%}" class="btn btn-primary" style="color: white">Comment</a>
                         {% if post.user == user%}
                             <a><form action="{% url 'images:UpdatePost' post.id %}" method="post">
                                 {% csrf_token %}
