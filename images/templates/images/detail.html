@@ -74,7 +74,7 @@
                                     {% if user.is_authenticated and user == comment.author %}
                                         <form action="{% url 'images:DeleteComment' comment.pk %}" method="post">
                                             {% csrf_token %}
-                                            <input type="submit" value="DELETE">
+                                            <input type="submit" value="DELETE" class="btn btn-danger" style=" margin-left: 62%">
                                         </form>
                                     {% endif %}
                                 {% endfor %}
