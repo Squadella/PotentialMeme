@@ -1,17 +1,22 @@
-{% extends 'images/navbar.html' %}
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+    {% extends 'images/navbar.html' %}
 
-{% block body %}
-{% load staticfiles %}
-<link rel="stylesheet" href="{% static '/css/index.css' %}">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    {% block body %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static '/css/index.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-<div style="background-image: url({% static '/img/motif.jpg' %}); height: 1000px">
-<div class="myform" style="height: 300px;">
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {% include 'images/form-template.html' %}
-        <button class="btn btn-info" type="submit">Submit</button>
-    </form>
-</div>
-</div>
-{% endblock %}
+    <body style="height: 100%">
+        <div style="background-image: url({% static '/img/motif.jpg' %}); height: 100%">
+            <div class="myform" style="height: 300px;">
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% include 'images/form-template.html' %}
+                    <button class="btn btn-info" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+        {% endblock %}
+    </body>
+</html>
