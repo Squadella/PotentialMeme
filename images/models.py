@@ -25,9 +25,7 @@ class Comment(models.Model):
         return self.content
 
 
-class Favorite(models.Model):
+class UpVote(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    isFavorite = models.BooleanField(default=False)
-    isUpVoted = models.BooleanField(default=False)
 
