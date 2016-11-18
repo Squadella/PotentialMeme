@@ -35,18 +35,10 @@
                                             <input type="submit" class="btn btn-info" value="Update">
                                         </form></a>
                                     </div>
-                                    {% if post.favorite_set.all %}
-                                        {% for upVote in post.favorite_set.all %}
-                                            {% if upVote.user == user %}
-                                                {% if upVote.isFavorite == True %}
-                                                    <div style="float: left; margin-left: 1%"><a><span><input type="button" class="btn btn-warning" id="{{ post.id }}" value="unFav"></span></a></div>
-                                                {% else %}
-                                                    <div style="float: left ; margin-left: 1%;"><a><span><input type="button" class="btn btn-warning" id="{{ post.id }}" value="Fav"></span></a></div>
-                                                {% endif %}
-                                            {% endif %}
-                                        {% endfor %}
+                                    {% if post.id in favs %}
+                                        <div style="float: left; margin-left: 1%"><a><span><input type="button" class="btn btn-warning" id="{{ post.id }}" value="unFav"></span></a></div>
                                     {% else %}
-                                        <div style="float: left;margin-left: 1%;"><a><span><input type="button" class="btn btn-warning" id="{{ post.id }}" value="Fav"></span></a></div>
+                                        <div style="float: left ; margin-left: 1%;"><a><span><input type="button" class="btn btn-warning" id="{{ post.id }}" value="Fav"></span></a></div>
                                     {% endif %}
                                     <a style="margin-left: 1%"><form action="{% url 'images:DeletePost' post.id %}" method="post">
                                         {% csrf_token %}

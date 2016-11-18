@@ -1,15 +1,13 @@
-from django.shortcuts import render, get_object_or_404, redirect, render_to_response
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.http import Http404, HttpResponse
-from django.template import RequestContext
-
 try:
     from django.utils import simplejson as json
 except ImportError:
     import json
 from django.views.generic import ListView, DeleteView, DetailView, CreateView, UpdateView, View
 from django.core.urlresolvers import reverse_lazy
-from .models import Post, UpVote, Comment
+from .models import Post, UpVote, Favorite, Comment
 from .forms import UserForm, forms
 
 
@@ -21,11 +19,14 @@ class ViewIndex(ListView):
 
     def get_context_data(self, **kwargs):
         ctx = super(ViewIndex, self).get_context_data(**kwargs)
-        try:
-            x = UpVote.objects.filter(user=self.request.user)
-            ctx['UVS'] = [u.post.id for u in x]
-        except UpVote.DoesNotExist:
-            print(':(')
+        if self.request.user.is_authenticated():
+            try:
+                x = UpVote.objects.filter(user=self.request.user)
+                ctx['UVS'] = [u.post.id for u in x]
+                x = Favorite.objects.filter(user=self.request.user)
+                ctx['favs'] = [f.post.id for f in x]
+            except UpVote.DoesNotExist:
+                print(':(')
         return ctx
 
 
@@ -45,6 +46,18 @@ class ViewFavorites(ListView):
 class ViewDetail(DetailView):
     template_name = 'images/detail.html'
     model = Post
+
+    def get_context_data(self, **kwargs):
+        ctx = super(ViewDetail, self).get_context_data(**kwargs)
+        if self.request.user.is_authenticated():
+            try:
+                x = UpVote.objects.filter(user=self.request.user)
+                ctx['UVS'] = [u.post.id for u in x]
+                x = Favorite.objects.filter(user=self.request.user)
+                ctx['favs'] = [f.post.id for f in x]
+            except UpVote.DoesNotExist:
+                print(':(')
+        return ctx
 
 
 class CreatePost(CreateView):
@@ -174,19 +187,17 @@ def upVoted(request, image_id):
 
 
 def fav(request, image_id):
-    message = None
     if request.user.is_authenticated():
         post = get_object_or_404(Post, pk=image_id)
         user = request.user
     else:
         return redirect('images:login')
     try:
-        obj = UpVote.objects.get(post=post, user=user)
-        obj.isFavorite = not obj.isFavorite
-        obj.save()
+        obj = Favorite.objects.get(post=post, user=user)
+        obj.delete()
         message = 'OK'
-    except UpVote.DoesNotExist:
-        obj = UpVote(post=post, user=user, isUpVoted=False, isFavorite=True)
+    except Favorite.DoesNotExist:
+        obj = Favorite(post=post, user=user)
         obj.save()
         message = 'KO'
     ctx = {'message': message}
