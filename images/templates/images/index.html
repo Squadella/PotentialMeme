@@ -16,7 +16,7 @@
                         <div style="background-color: rgba(0,0,0,0.5);margin-top: 10px; width: 800px; margin-left: auto;margin-right: auto">
                         <div style="margin-top: 10px; width: 500px; margin-left: auto;margin-right: auto">
                             <li>
-                                <div style="margin-bottom: 10px; float: left; margin-left: 40%; height: auto"><h3><u><a href="{% url 'images:detail' post.id %}" style="color: white">{{ post.title }}</a></u></h3></div>
+                                <div style="margin-bottom: 10px; height: auto"><h3><u><a href="{% url 'images:detail' post.id %}" style="color: white">{{ post.title }}</a></u></h3></div>
                                 <a href="{% url 'images:detail' post.id %}"><img src="{{ post.image.url }}" class="img-responsive center" style="max-width: 95%; height: auto;"><br></a>
                                 {% if user.is_authenticated %}
                                     <div style="float: right">
