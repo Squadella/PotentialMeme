@@ -10,6 +10,11 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href={% static 'img/favicons/apple-touch-icon.png' %}>
+    <link rel="icon" type="image/png" href={% static 'img/favicons/favicon-32x32.png' %} sizes="32x32">
+    <link rel="icon" type="image/png" href={% static 'img/favicons/favicon-16x16.png' %} sizes="16x16">
+    <link rel="manifest" href={% static 'img/favicons/manifest.json' %}>
+    <meta name="theme-color" content="#ffffff">
 </head>
 <div style="background-image: radial-gradient( white, black); height: 72px">
 
@@ -19,7 +24,7 @@
 
                 <!-- Logo -->
                 <div class="navbar-header">
-                    <a href="{% url 'images:index' %}" class="navbar-brand">Potential Meme</a>
+                    <a href="{% url 'images:index' %}" class="navbar-logo" ><img src="{% static 'img/favicons/logo.png' %}" style="height: 50px; width: 50px;"></a>
                 </div>
 
                 <!-- Menu Items -->
