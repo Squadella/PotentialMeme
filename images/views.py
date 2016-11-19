@@ -54,6 +54,11 @@ class ViewFavorites(ListView):
                 print(':(')
         return ctx
 
+    def get_queryset(self):
+        if self.request.user.is_authenticated():
+            return Favorite.objects.filter(user=self.request.user)
+        else:
+            return None
 
 class ViewDetail(DetailView):
     template_name = 'images/detail.html'
