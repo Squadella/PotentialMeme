@@ -15,61 +15,44 @@
                     {% for post in allPosts %}
                         <div style="background-color: rgba(0,0,0,0.5);margin-top: 10px; width: 800px; margin-left: auto;margin-right: auto">
                         <div style="margin-top: 10px; width: 500px; margin-left: auto;margin-right: auto">
-                                <li>
+                            <li>
                                 <div style="margin-bottom: 10px; float: left; margin-left: 40%; height: auto"><h3><u><a href="{% url 'images:detail' post.id %}" style="color: white">{{ post.title }}</a></u></h3></div>
                                 <a href="{% url 'images:detail' post.id %}"><img src="{{ post.image.url }}" class="img-responsive center" style="max-width: 95%; height: auto;"><br></a>
                                 {% if user.is_authenticated %}
-                                <div style="float: right">
-                                    <a><form>
-                                         {% if post.favorite_set.all %}
-                                            {% for upVote in post.favorite_set.all %}
-                                                {% if upVote.user == user %}
-                                                    {% if upVote.isUpVoted == True %}
-                                                        <input type="button" class="btn btn-danger" id="{{ post.id }}" name="Up Vote" value="DownVote">
-                                                    {% else %}
-                                                        <input type="button" class="btn btn-success" id="{{ post.id }}" name="Up Vote" value="UpVote">
-                                                    {% endif %}
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% else %}
-                                            <input type="button" class="btn btn-success" id="{{ post.id }}" name="Up Vote" value="UpVote">
-                                        {% endif %}
-                                    </form></a>
-
-                                </div>
-
+                                    <div style="float: right">
+                                        <a><form>
+                                            {% if post.id in UVS %}
+                                                <input type="button" class="btn btn-danger" id="{{ post.id }}" name="Up Vote" value="DownVote">
+                                            {% else %}
+                                                <input type="button" class="btn btn-success" id="{{ post.id }}" name="Up Vote" value="UpVote">
+                                            {% endif %}
+                                        </form></a>
+                                    </div>
                             </li>
-                             <div style="float: left; margin-left: 1%">
-                                    <a><form action="{% url 'images:UpdatePost' post.id %}" method="post">
-                                        {% csrf_token %}
-                                        <input type="submit" class="btn btn-info" value="Update">
-                                    </form></a>
-                             </div>
-                            {% if post.favorite_set.all %}
-                                {% for upVote in post.favorite_set.all %}
-                                     {% if upVote.user == user %}
-                                          {% if upVote.isFavorite == True %}
-                                              <div style="float: left; margin-left: 1%"><a><span><input type="button" class="btn btn-warning" id="{{ post.id }}" value="unFav"></span></a></div>
-                                          {% else %}
-                                              <div style="float: left ; margin-left: 1%;"><a><span><input type="button" class="btn btn-warning" id="{{ post.id }}" value="Fav"></span></a></div>
-                                          {% endif %}
-                                     {% endif %}
-                                {% endfor %}
-                            {% else %}
-                                <div style="float: left;margin-left: 1%;"><a><span><input type="button" class="btn btn-warning" id="{{ post.id }}" value="Fav"></span></a></div>
-                            {% endif %}
-                                    <a style="margin-left: 1%"><form action="{% url 'images:DeletePost' post.id %}" method="post">
-                                        {% csrf_token %}
-                                        <input type="submit" class="btn btn-danger" value="DELETE">
-                                    </form></a>
-
-                            {% endif %}
+                                    <div style="float: left; margin-left: 1%">
+                                        {% if post.author == user %}
+                                            <a><form action="{% url 'images:UpdatePost' post.id %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="submit" class="btn btn-info" value="Update">
+                                            </form></a>
+                                        {% endif %}
+                                    </div>
+                                    {% if post.id in favs %}
+                                        <div style="float: left; margin-left: 1%"><a><span><input type="button" class="btn btn-warning" id="{{ post.id }}" value="unFav"></span></a></div>
+                                    {% else %}
+                                        <div style="float: left ; margin-left: 1%;"><a><span><input type="button" class="btn btn-warning" id="{{ post.id }}" value="Fav"></span></a></div>
+                                    {% endif %}
+                                    {% if post.author == user %}
+                                        <a style="margin-left: 1%"><form action="{% url 'images:DeletePost' post.id %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="submit" class="btn btn-danger" value="DELETE">
+                                        </form></a>
+                                    {% endif %}
+                                {% endif %}
                             <img src="{% static 'img/separator.png' %}" style="margin-left: auto;margin-right: auto; max-width: 100%;">
-                            </div>
                         </div>
-                        {% endfor %}
-
-
+                        </div>
+                    {% endfor %}
                 </ul>
                 {% if is_paginated %}
                     <div class="pagination">
