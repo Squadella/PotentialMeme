@@ -13,42 +13,40 @@
         {% if user.is_authenticated %}
             {% if allPosts %}
                 <ul>
-                    {% for post in allPosts %}
-                        {% if post.id in favs %}
-                            <div style="background-color: rgba(0,0,0,0.5);margin-top: 10px; width: 800px; margin-left: auto;margin-right: auto">
-                                <div style="margin-top: 10px; width: 500px; margin-left: auto;margin-right: auto">
-                                    <li>
-                                        <div style="margin-bottom: 10px; float: left; margin-left: 40%; height: auto"><h3><u><a href="{% url 'images:detail' post.id %}" style="color: white">{{ post.title }}</a></u></h3></div>
-                                        <a href="{% url 'images:detail' post.id %}"><img src="{{ post.image.url }}" class="img-responsive center" style="max-width: 95%; height: auto;"><br></a>
-                                        <div style="float: right">
-                                            <a><form>
-                                                {% if post.id in UVS %}
-                                                    <input type="button" class="btn btn-danger" id="{{ post.id }}" name="Up Vote" value="DownVote">
-                                                {% else %}
-                                                    <input type="button" class="btn btn-success" id="{{ post.id }}" name="Up Vote" value="UpVote">
-                                                {% endif %}
-                                            </form></a>
-                                        </div>
-                                    </li>
-                                    {% if post.author == user %}
-                                        <div style="float: left; margin-left: 1%">
-                                            <a><form action="{% url 'images:UpdatePost' post.id %}" method="post">
-                                                {% csrf_token %}
-                                                <input type="submit" class="btn btn-info" value="Update">
-                                            </form></a>
-                                        </div>
-                                    {% endif %}
-                                    <div style="float: left; margin-left: 1%"><a><span><input type="button" class="btn btn-warning" id="{{ post.id }}" value="unFav"></span></a></div>
-                                    {% if post.author == user %}
-                                        <a style="margin-left: 1%"><form action="{% url 'images:DeletePost' post.id %}" method="post">
-                                            {% csrf_token %}
-                                            <input type="submit" class="btn btn-danger" value="DELETE">
+                    {% for favPost in allPosts %}
+                        <div style="background-color: rgba(0,0,0,0.5);margin-top: 10px; width: 800px; margin-left: auto;margin-right: auto">
+                            <div style="margin-top: 10px; width: 500px; margin-left: auto;margin-right: auto">
+                                <li>
+                                    <div style="margin-bottom: 10px; float: left; margin-left: 40%; height: auto"><h3><u><a href="{% url 'images:detail' favPost.post.id %}" style="color: white">{{ favPost.post.title }}</a></u></h3></div>
+                                    <a href="{% url 'images:detail' favPost.post.id %}"><img src="{{ favPost.post.image.url }}" class="img-responsive center" style="max-width: 95%; height: auto;"><br></a>
+                                    <div style="float: right">
+                                        <a><form>
+                                            {% if favPost.post.id in UVS %}
+                                                <input type="button" class="btn btn-danger" id="{{ favPost.post.id }}" name="Up Vote" value="DownVote">
+                                            {% else %}
+                                                <input type="button" class="btn btn-success" id="{{ favPost.post.id }}" name="Up Vote" value="UpVote">
+                                            {% endif %}
                                         </form></a>
-                                    {% endif %}
-                                    <img src="{% static 'img/separator.png' %}" style="margin-left: auto;margin-right: auto; max-width: 100%;">
-                                </div>
+                                    </div>
+                                </li>
+                                {% if favPost.post.author == user %}
+                                    <div style="float: left; margin-left: 1%">
+                                        <a><form action="{% url 'images:UpdatePost' favPost.post.id %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="submit" class="btn btn-info" value="Update">
+                                        </form></a>
+                                    </div>
+                                {% endif %}
+                                <div style="float: left; margin-left: 1%"><a><span><input type="button" class="btn btn-warning" id="{{ favPost.post.id }}" value="unFav"></span></a></div>
+                                {% if favPost.post.author == user %}
+                                    <a style="margin-left: 1%"><form action="{% url 'images:DeletePost' favPost.post.id %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="submit" class="btn btn-danger" value="DELETE">
+                                    </form></a>
+                                {% endif %}
+                                <img src="{% static 'img/separator.png' %}" style="margin-left: auto;margin-right: auto; max-width: 100%;">
                             </div>
-                        {% endif %}
+                        </div>
                     {% endfor %}
                 </ul>
                 {% if is_paginated %}
@@ -56,13 +54,13 @@
                         <div class="pagination">
                             <span class="page-links">
                                 {% if page_obj.has_previous %}
-                                    <a href="/images?page={{ page_obj.previous_page_number }}" class="btn btn-default">previous</a>
+                                    <a href="/images/favorites?page={{ page_obj.previous_page_number }}" class="btn btn-default">previous</a>
                                 {% endif %}
                                 <span class="current">
                                     Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
                                 </span>
                                 {% if page_obj.has_next %}
-                                    <a href="/images?page={{ page_obj.next_page_number }}" class="btn btn-default">next</a>
+                                    <a href="/images/favorites?page={{ page_obj.next_page_number }}" class="btn btn-default">next</a>
                                 {% endif %}
                             </span>
                         </div>
