@@ -55,18 +55,20 @@
                     {% endfor %}
                 </ul>
                 {% if is_paginated %}
-                    <div class="pagination">
-                        <span class="page-links">
-                            {% if page_obj.has_previous %}
-                                <a href="/images?page={{ page_obj.previous_page_number }}">previous</a>
-                            {% endif %}
-                            <span class="current">
-                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                    <div style="text-align: center; background-color: rgba(255,255,255,0.7)">
+                        <div class="pagination">
+                            <span class="page-links">
+                                {% if page_obj.has_previous %}
+                                    <a href="/images?page={{ page_obj.previous_page_number }}" class="btn btn-default">previous</a>
+                                {% endif %}
+                                <span class="current">
+                                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                                </span>
+                                {% if page_obj.has_next %}
+                                    <a href="/images?page={{ page_obj.next_page_number }}" class="btn btn-default">next</a>
+                                {% endif %}
                             </span>
-                            {% if page_obj.has_next %}
-                                <a href="/images?page={{ page_obj.next_page_number }}">next</a>
-                            {% endif %}
-                        </span>
+                        </div>
                     </div>
                 {% endif %}
             {%  else %}
