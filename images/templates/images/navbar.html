@@ -33,6 +33,7 @@
                         <li><a href="{% url 'images:favorites' %}">Favorites</a></li>
                         <li><a href="{% url 'images:CreatePost' %}">Create Post</a></li>
                     </ul>
+                    <ul class="nav navbar-nav" style="margin-left: 32%"><a class="navbar-brand" href="{% url 'images:index' %}">Potential Meme</a></ul>
                     <ul class="nav navbar-nav navbar-right">
 
                         <li>
@@ -52,12 +53,13 @@
 
                 <!-- Logo -->
                 <div class="navbar-header">
-                    <a href="/images" class="navbar-brand">Potential Meme</a>
+                    <a href="{% url 'images:index' %}" class="navbar-logo" ><img src="{% static 'img/favicons/logo.png' %}" style="height: 50px; width: 50px;"></a>
                 </div>
 
                 <!-- Menu Items -->
                 <div>
 
+                    <ul class="nav navbar-nav" style="margin-left: 43%"><a class="navbar-brand" href="{% url 'images:index' %}">Potential Meme</a></ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a href="{% url 'images:register' %}">
