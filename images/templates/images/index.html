@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-    <body style="height: 100%">
-        <div style="height: calc(100% - 50px);background-image: url({% static 'img/motif.jpg' %});">
+    <body style="height: 100% ;background-image: url({% static 'img/motif.jpg' %});">
+
             {% if allPosts %}
                 <ul>
                     {% for post in allPosts %}
@@ -70,10 +70,12 @@
                     </div>
                 {% endif %}
             {%  else %}
-                <div style="background-color: rgba(0,0,0,0.5); height: 50%; text-align: center;"><img src="{% static 'img/nothing.jpg' %}" style="margin-top: 2%"></div>
+                <div style="background-color: rgba(0,0,0,0.5); text-align: center;"><img src="{% static 'img/nothing.jpg' %}" style="margin-top: 2%"></div>
+                <div style="background-color: rgba(0,0,0,0.5); text-align: center;"><img src="{% static 'img/nothing2.jpg' %}" style="margin-top: 2%"></div>
+                <div style="background-color: rgba(0,0,0,0.5); text-align: center;"><img src="{% static 'img/why.jpg' %}" style="margin-top: 2%"></div>
             {%  endif %}
 
-        </div>
+
 
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
