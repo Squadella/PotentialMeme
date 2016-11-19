@@ -30,20 +30,24 @@
                                     </div>
                             </li>
                                     <div style="float: left; margin-left: 1%">
-                                        <a><form action="{% url 'images:UpdatePost' post.id %}" method="post">
-                                            {% csrf_token %}
-                                            <input type="submit" class="btn btn-info" value="Update">
-                                        </form></a>
+                                        {% if post.author == user %}
+                                            <a><form action="{% url 'images:UpdatePost' post.id %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="submit" class="btn btn-info" value="Update">
+                                            </form></a>
+                                        {% endif %}
                                     </div>
                                     {% if post.id in favs %}
                                         <div style="float: left; margin-left: 1%"><a><span><input type="button" class="btn btn-warning" id="{{ post.id }}" value="unFav"></span></a></div>
                                     {% else %}
                                         <div style="float: left ; margin-left: 1%;"><a><span><input type="button" class="btn btn-warning" id="{{ post.id }}" value="Fav"></span></a></div>
                                     {% endif %}
-                                    <a style="margin-left: 1%"><form action="{% url 'images:DeletePost' post.id %}" method="post">
-                                        {% csrf_token %}
-                                        <input type="submit" class="btn btn-danger" value="DELETE">
-                                    </form></a>
+                                    {% if post.author == user %}
+                                        <a style="margin-left: 1%"><form action="{% url 'images:DeletePost' post.id %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="submit" class="btn btn-danger" value="DELETE">
+                                        </form></a>
+                                    {% endif %}
                                 {% endif %}
                             <img src="{% static 'img/separator.png' %}" style="margin-left: auto;margin-right: auto; max-width: 100%;">
                         </div>

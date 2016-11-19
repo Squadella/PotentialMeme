@@ -23,24 +23,36 @@ class ViewIndex(ListView):
             try:
                 x = UpVote.objects.filter(user=self.request.user)
                 ctx['UVS'] = [u.post.id for u in x]
+            except UpVote.DoesNotExist:
+                print(':(')
+            try:
                 x = Favorite.objects.filter(user=self.request.user)
                 ctx['favs'] = [f.post.id for f in x]
-            except UpVote.DoesNotExist:
+            except Favorite.DoesNotExist:
                 print(':(')
         return ctx
 
 
 class ViewFavorites(ListView):
     template_name = 'images/favorites.html'
-    model = UpVote
+    model = Post
     paginate_by = 15
     context_object_name = 'allPosts'
 
-    def get_queryset(self):
+    def get_context_data(self, **kwargs):
+        ctx = super(ViewFavorites, self).get_context_data(**kwargs)
         if self.request.user.is_authenticated():
-            user = self.request.user
-            return '''UpVote.objects.filter(isFavorite=True, user=user)'''
-        return redirect('images:login')
+            try:
+                x = UpVote.objects.filter(user=self.request.user)
+                ctx['UVS'] = [u.post.id for u in x]
+            except UpVote.DoesNotExist:
+                print(':(')
+            try:
+                x = Favorite.objects.filter(user=self.request.user)
+                ctx['favs'] = [f.post.id for f in x]
+            except Favorite.DoesNotExist:
+                print(':(')
+        return ctx
 
 
 class ViewDetail(DetailView):
@@ -53,10 +65,13 @@ class ViewDetail(DetailView):
             try:
                 x = UpVote.objects.filter(user=self.request.user)
                 ctx['UVS'] = [u.post.id for u in x]
+            except UpVote.DoesNotExist:
+                return Http404
+            try:
                 x = Favorite.objects.filter(user=self.request.user)
                 ctx['favs'] = [f.post.id for f in x]
-            except UpVote.DoesNotExist:
-                print(':(')
+            except Favorite.DoesNotExist:
+                return Http404
         return ctx
 
 

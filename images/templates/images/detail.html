@@ -5,10 +5,9 @@
     {% block body %}
     {% load staticfiles %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static '/css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
 
     <body style="height: 100%;">
-
         <div style="background-image: url({% static '/img/motif.jpg' %});height: 100%">
             <div style="background-color: rgba(0,0,0,0.5); margin-left: auto; margin-right: auto; width: 800px;height: 100%;">
                 <div style="margin-left: auto; margin-right: auto; width: 800px;">
@@ -20,20 +19,22 @@
                         </div>
                         {% if user.is_authenticated %}
                             <div style="float: left; width: 50%">
-                            {% if post.id in favs %}
-                                <span><input style="margin-left: 4%" type="button" class="btn btn-warning" id="{{ post.id }}" value="UnFav"></span>
-                            {% else %}
-                                <span><input style="margin-left: 4%" type="button" class="btn btn-warning" id="{{ post.id }}" value="Fav"></span>
-                            {% endif %}
+                                {% if post.id in favs %}
+                                    <span><input style="margin-left: 4%" type="button" class="btn btn-warning" id="{{ post.id }}" value="UnFav"></span>
+                                {% else %}
+                                    <span><input style="margin-left: 4%" type="button" class="btn btn-warning" id="{{ post.id }}" value="Fav"></span>
+                                {% endif %}
                                 <div class="btn btn-primary"><a href="{% url 'images:comment' post.id%}" style="color: white">Comment</a></div>
-                                <a><form action="{% url 'images:UpdatePost' post.id %}" method="post">
-                                    {% csrf_token %}
-                                    <input type="submit" class="btn btn-info" value="Update">
-                                </form></a>
-                                <a><form action="{% url 'images:DeletePost' post.id %}" method="post">
-                                    {% csrf_token %}
-                                    <input type="submit" class="btn btn-danger" value="DELETE">
-                                </form></a>
+                                {% if post.author == user %}
+                                    <a><form action="{% url 'images:UpdatePost' post.id %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="submit" class="btn btn-info" value="Update">
+                                    </form></a>
+                                    <a><form action="{% url 'images:DeletePost' post.id %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="submit" class="btn btn-danger" value="DELETE">
+                                    </form></a>
+                                {% endif %}
                             </div>
                             <div style="margin-left: 80%">
                                 <li style="list-style: none">

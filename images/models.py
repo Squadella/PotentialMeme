@@ -6,8 +6,7 @@ from django.contrib.auth.models import User
 class Post(models.Model):
     author = models.ForeignKey(User)
     title = models.CharField(max_length=250)
-    image = models.FileField()
-    description = models.CharField(max_length=10000)
+    image = models.ImageField()
 
     def get_absolute_url(self):
         return reverse('images:detail', kwargs={'pk': self.pk})
