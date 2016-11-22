@@ -19,7 +19,7 @@
                                 <li>
                                     <div style="margin-bottom: 10px; height: auto"><h3><u><a href="{% url 'images:detail' favPost.post.id %}" style="color: white">{{ favPost.post.title }}</a></u></h3></div>
                                     <a href="{% url 'images:detail' favPost.post.id %}"><img src="{{ favPost.post.image.url }}" class="img-responsive center" style="max-width: 95%; height: auto;"><br></a>
-                                    <div style="float: right">
+                                    <div style="float: right; width: auto; color: white">
                                         <a><form>
                                             {% if favPost.post.id in UVS %}
                                                 <input type="button" class="btn btn-danger" id="{{ favPost.post.id }}" name="Up Vote" value="DownVote">
@@ -27,6 +27,7 @@
                                                 <input type="button" class="btn btn-success" id="{{ favPost.post.id }}" name="Up Vote" value="UpVote">
                                             {% endif %}
                                         </form></a>
+                                        UpVotes : {{ favPost.post.upVoteCounter }}
                                     </div>
                                 </li>
                                 {% if favPost.post.author == user %}

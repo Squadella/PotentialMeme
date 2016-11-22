@@ -197,9 +197,13 @@ def upVoted(request, image_id):
     try:
         obj = UpVote.objects.get(post=post, user=user)
         obj.delete()
+        post.upVoteCounter -= 1
+        post.save()
         message = 'OK'
     except UpVote.DoesNotExist:
         obj = UpVote(post=post, user=user)
+        post.upVoteCounter += 1
+        post.save()
         obj.save()
         message = 'KO'
     ctx = {'message': message}

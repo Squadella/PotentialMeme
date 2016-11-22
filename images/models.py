@@ -7,6 +7,7 @@ class Post(models.Model):
     author = models.ForeignKey(User)
     title = models.CharField(max_length=250)
     image = models.ImageField()
+    upVoteCounter = models.IntegerField(default=0)
 
     def get_absolute_url(self):
         return reverse('images:detail', kwargs={'pk': self.pk})

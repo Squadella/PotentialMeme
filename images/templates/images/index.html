@@ -19,7 +19,7 @@
                                 <div style="margin-bottom: 10px; height: auto"><h3><u><a href="{% url 'images:detail' post.id %}" style="color: white">{{ post.title }}</a></u></h3></div>
                                 <a href="{% url 'images:detail' post.id %}"><img src="{{ post.image.url }}" class="img-responsive center" style="max-width: 95%; height: auto;"><br></a>
                                 {% if user.is_authenticated %}
-                                    <div style="float: right">
+                                    <div style="float: right; color: white" >
                                         <a><form>
                                             {% if post.id in UVS %}
                                                 <input type="button" class="btn btn-danger" id="{{ post.id }}" name="Up Vote" value="DownVote">
@@ -27,6 +27,7 @@
                                                 <input type="button" class="btn btn-success" id="{{ post.id }}" name="Up Vote" value="UpVote">
                                             {% endif %}
                                         </form></a>
+                                        UpVotes : {{ post.upVoteCounter }}
                                     </div>
                             </li>
                                     <div style="float: left; margin-left: 1%">
