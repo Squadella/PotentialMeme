@@ -58,7 +58,7 @@ class ViewFavorites(ListView):
         if self.request.user.is_authenticated():
             return Favorite.objects.filter(user=self.request.user)
         else:
-            return None
+            return Favorite.objects.none()
 
 class ViewDetail(DetailView):
     template_name = 'images/detail.html'
