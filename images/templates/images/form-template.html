@@ -1,0 +1,7 @@
+{% for field in form %}
+
+    <label style=" margin-top: 20px"><div style="color: white">{{ field.label_tag }}</div> <br>
+            <label style="color: deepskyblue">{{ field }}</label>
+    </label>
+    <br>
+{% endfor %}

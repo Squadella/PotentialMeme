@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Potential Meme</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href={% static 'img/favicons/apple-touch-icon.png' %}>
+    <link rel="icon" type="image/png" href={% static 'img/favicons/favicon-32x32.png' %} sizes="32x32">
+    <link rel="icon" type="image/png" href={% static 'img/favicons/favicon-16x16.png' %} sizes="16x16">
+    <link rel="manifest" href={% static 'img/favicons/manifest.json' %}>
+    <meta name="theme-color" content="#ffffff">
+</head>
+<div style="background-image: radial-gradient( white, black); height: 72px">
+
+    {% if user.is_authenticated %}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+                <!-- Logo -->
+                <div class="navbar-header">
+                    <a href="{% url 'images:index' %}" class="navbar-logo" ><img src="{% static 'img/favicons/logo.png' %}" style="height: 50px; width: 50px;"></a>
+                </div>
+
+                <!-- Menu Items -->
+                <div>
+                    <ul class="nav navbar-nav">
+                        <li><a href="{% url 'images:favorites' %}">Favorites</a></li>
+                        <li><a href="{% url 'images:CreatePost' %}">Create Post</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav" style="margin-left: 32%"><a class="navbar-brand" href="{% url 'images:index' %}">Potential Meme</a></ul>
+                    <ul class="nav navbar-nav navbar-right">
+
+                        <li>
+                            <a href="{% url 'images:logout' %}">
+                                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+    </nav>
+
+    {% else %}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+                <!-- Logo -->
+                <div class="navbar-header">
+                    <a href="{% url 'images:index' %}" class="navbar-logo" ><img src="{% static 'img/favicons/logo.png' %}" style="height: 50px; width: 50px;"></a>
+                </div>
+
+                <!-- Menu Items -->
+                <div>
+
+                    <ul class="nav navbar-nav" style="margin-left: 43%"><a class="navbar-brand" href="{% url 'images:index' %}">Potential Meme</a></ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="{% url 'images:register' %}">
+                                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Register
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'images:login' %}">
+                                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Login
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+        </div>
+        </nav>
+    {% endif %}
+    {% block body %}
+    {% endblock %}
+</div>
+</html>

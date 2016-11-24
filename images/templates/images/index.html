@@ -1,33 +1,88 @@
-{% if allPosts %}
-    <ul>
-        {% for post in allPosts %}
-            <li>
-                <a href="{% url 'images:detail' post.id %}">{{ post.title }}
-                    <form action="{% url 'images:generalUpVoted' post.id %}" method="post">
-                        {% csrf_token %}
-                        <input type="submit" value="upVote">
-                    </form>
-                    <form action="{% url 'images:generalFaved' post.id %}" method="post">
-                        {% csrf_token %}
-                        <input type="submit" value="Fav">
-                    </form>
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
-    <div class="pagination">
-        <span class="step-links">
-            {% if allPosts.has_previous %}
-                <a href="?page={{ allPosts.previous_page_number }}">previous</a>
-            {% endif %}
-            <span class="current">
-                Page {{ allPosts.number }} of {{ allPosts.paginator.num_pages }}
-            </span>
-            {% if allPosts.has_next %}
-                <a href="?page={{ allPosts.next_page_number }}">next</a>
-            {% endif %}
-        </span>
-    </div>
-{%  else %}
-    <h3>Nothing to show here</h3>
-{%  endif %}
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+<!--Includes, to be moved in a general html file-->
+    {% extends 'images/navbar.html' %}
+
+    {% block body %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <body style="height: 100% ;background-image: url({% static 'img/motif.jpg' %});">
+
+            {% if allPosts %}
+                <ul>
+                    {% for post in allPosts %}
+                        <div style="background-color: rgba(0,0,0,0.5);margin-top: 10px; width: 800px; margin-left: auto;margin-right: auto">
+                        <div style="margin-top: 10px; width: 500px; margin-left: auto;margin-right: auto">
+                            <li>
+                                <div style="margin-bottom: 10px; height: auto"><h3><u><a href="{% url 'images:detail' post.id %}" style="color: white">{{ post.title }}</a></u></h3></div>
+                                <a href="{% url 'images:detail' post.id %}"><img src="{{ post.image.url }}" class="img-responsive center" style="max-width: 95%; height: auto;"><br></a>
+                                {% if user.is_authenticated %}
+                                    <div style="float: right; color: white" >
+                                        <a><form>
+                                            {% if post.id in UVS %}
+                                                <input type="button" class="btn btn-danger" id="{{ post.id }}" name="Up Vote" value="DownVote">
+                                            {% else %}
+                                                <input type="button" class="btn btn-success" id="{{ post.id }}" name="Up Vote" value="UpVote">
+                                            {% endif %}
+                                        </form></a>
+                                        UpVotes : {{ post.upVoteCounter }}
+                                    </div>
+                            </li>
+                                    <div style="float: left; margin-left: 1%">
+                                        {% if post.author == user %}
+                                            <a><form action="{% url 'images:UpdatePost' post.id %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="submit" class="btn btn-info" value="Update">
+                                            </form></a>
+                                        {% endif %}
+                                    </div>
+                                    {% if post.id in favs %}
+                                        <div style="float: left; margin-left: 1%"><a><span><input type="button" class="btn btn-warning" id="{{ post.id }}" value="unFav"></span></a></div>
+                                    {% else %}
+                                        <div style="float: left ; margin-left: 1%;"><a><span><input type="button" class="btn btn-warning" id="{{ post.id }}" value="Fav"></span></a></div>
+                                    {% endif %}
+                                    {% if post.author == user %}
+                                        <a style="margin-left: 1%"><form action="{% url 'images:DeletePost' post.id %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="submit" class="btn btn-danger" value="DELETE">
+                                        </form></a>
+                                    {% endif %}
+                                {% endif %}
+                            <img src="{% static 'img/separator.png' %}" style="margin-left: auto;margin-right: auto; max-width: 100%;">
+                        </div>
+                        </div>
+                    {% endfor %}
+                </ul>
+                {% if is_paginated %}
+                    <div style="text-align: center; background-color: rgba(255,255,255,0.7)">
+                        <div class="pagination">
+                            <span class="page-links">
+                                {% if page_obj.has_previous %}
+                                    <a href="/images?page={{ page_obj.previous_page_number }}" class="btn btn-default" style="color: white; background-color: black">previous</a>
+                                {% endif %}
+                                <span class="current">
+                                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                                </span>
+                                {% if page_obj.has_next %}
+                                    <a href="/images?page={{ page_obj.next_page_number }}" class="btn btn-default" style="color: white; background-color: black">next</a>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                {% endif %}
+            {%  else %}
+                <div style="background-color: rgba(0,0,0,0.5); text-align: center;"><img src="{% static 'img/nothing.jpg' %}" style="margin-top: 2%"></div>
+                <div style="background-color: rgba(0,0,0,0.5); text-align: center;"><img src="{% static 'img/nothing2.jpg' %}" style="margin-top: 2%"></div>
+                <div style="background-color: rgba(0,0,0,0.5); text-align: center;"><img src="{% static 'img/why.jpg' %}" style="margin-top: 2%"></div>
+            {%  endif %}
+
+
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="{% static 'js/main.js' %}"></script>
+    </body>
+    {% endblock %}
+</html>

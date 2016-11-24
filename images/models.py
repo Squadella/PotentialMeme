@@ -1,10 +1,16 @@
 from django.db import models
+from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
+
 
 class Post(models.Model):
+    author = models.ForeignKey(User)
     title = models.CharField(max_length=250)
-    image = models.CharField(max_length=1000)
-    isUpVoted = models.BooleanField(default=False)
-    isFaved = models.BooleanField(default=False)
+    image = models.ImageField()
+    upVoteCounter = models.IntegerField(default=0)
+
+    def get_absolute_url(self):
+        return reverse('images:detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         return self.title
@@ -12,8 +18,18 @@ class Post(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    author = models.CharField(max_length=10000)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.CharField(max_length=10000)
 
     def __str__(self):
         return self.content
+
+
+class UpVote(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
+class Favorite(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
