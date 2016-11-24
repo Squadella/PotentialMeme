@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'gsy-#&aopxk6tj+%=z(zgw5rsau2fwbyq5d=lga=nvq*-9f1^^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['potentialmeme.cf', 'www.potentialmeme.cf', '91.121.13.80']
 
 
 # Application definition
