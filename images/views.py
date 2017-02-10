@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.http import Http404, HttpResponse
+
 try:
     from django.utils import simplejson as json
 except ImportError:
@@ -32,6 +33,9 @@ class ViewIndex(ListView):
                 print(':(')
         return ctx
 
+    def get_queryset(self):
+        return Post.objects.all().order_by("-id")
+
 
 class ViewFavorites(ListView):
     template_name = 'images/favorites.html'
@@ -56,9 +60,10 @@ class ViewFavorites(ListView):
 
     def get_queryset(self):
         if self.request.user.is_authenticated():
-            return Favorite.objects.filter(user=self.request.user)
+            return Favorite.objects.filter(user=self.request.user).order_by("-id")
         else:
             return Favorite.objects.none()
+
 
 class ViewDetail(DetailView):
     template_name = 'images/detail.html'
@@ -138,7 +143,7 @@ class UserFormRegistration(View):
     # Display the blank form
     def get(self, request):
         form = self.form_class(None)
-        return render(request, self.template_name, {'form':form})
+        return render(request, self.template_name, {'form': form})
 
     # Recieve the filled out form
     def post(self, request):
@@ -157,7 +162,7 @@ class UserFormRegistration(View):
                     login(request, user)
                     return redirect('images:index')
 
-        return render(request, self.template_name, {'form':form})
+        return render(request, self.template_name, {'form': form})
 
 
 class UserFormLogin(View):
@@ -167,7 +172,7 @@ class UserFormLogin(View):
     # Display the blank form
     def get(self, request):
         form = self.form_class(None)
-        return render(request, self.template_name, {'form':form})
+        return render(request, self.template_name, {'form': form})
 
     # Recieve the filled out form
     def post(self, request):
@@ -180,7 +185,7 @@ class UserFormLogin(View):
                 login(request, user)
                 return redirect('images:index')
 
-        return render(request, self.template_name, {'form':form})
+        return render(request, self.template_name, {'form': form})
 
 
 def userLogout(request):
